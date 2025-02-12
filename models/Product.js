@@ -1,0 +1,1 @@
+//! Modelo del producto con los campos ___, ___ y los timestamps.
