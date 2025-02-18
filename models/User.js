@@ -1,1 +1,22 @@
-//! Modelo del usuario con los campos ___, ___ y los timestamps.
+// --------------------------------------------------------------
+// ------------- Creando el modelo de usuario -------------------
+// --------------------------------------------------------------
+
+//! Usuario admin¿?¿?¿?¿?
+//! ¿Es con Firebase?
+
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+    name: { 
+        type: String, 
+        required: true 
+    },
+    email: { 
+        type: String, 
+        required: true, 
+        unique: true 
+    },
+}, { timestamps: true });
+
+module.exports = mongoose.model("users", userSchema);
