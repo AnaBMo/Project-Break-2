@@ -1,3 +1,7 @@
-/*
-Hoja de estilos de nuestra aplicación.
-*/
+/* ------------------------------------
+Hoja de estilos de nuestra aplicación
+------------------------------------- */
+
+h1{
+    color: cadetblue;
+}

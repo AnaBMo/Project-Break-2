@@ -1,3 +1,6 @@
+// ---------------------------------------------------------------------------
+// -------  Lógica para manejar las solicitudes CRUD de los productos  -------
+// ---------------------------------------------------------------------------
 const productModel = require("../models/Product");
 
 const productController = {
