@@ -8,11 +8,11 @@ const productSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'El nombre del producto es obligatorio'],
+      required: [true, 'Product name is required'],
     },
     description: {
       type: String,
-      maxLength: [200, 'La descripción tiene un máximo de 200 caracteres'],
+      maxLength: [200, 'The description must have a maximum of 200 characters'],
     },
     img: {
       type: String, // URL de la imagen
@@ -31,7 +31,7 @@ const productSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: true,
-      min: [0, 'El precio no puede ser negativo'],
+      min: [0, 'The price cannot be negative'],
     },
   },
   { timestamps: true }

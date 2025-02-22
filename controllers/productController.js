@@ -2,40 +2,64 @@
 // -------  Lógica para manejar las solicitudes CRUD de los productos  -------
 // ---------------------------------------------------------------------------
 const productModel = require("../models/Product");
+const path = require("path"); // necesario para acceder a las views y mostrar contenido html
 
 const productController = {
-
-    // ----- 1 -----
-    // showProducts: Devuelve la vista con todos los productos.
-    async getAllProducts (req, res) {
-        try {
-            const product = await productModel.find();
-            res.status(200).json({ mensaje: '✅ All products list:', product })
-        } catch (error) {
-            console.error('❌ There was a problem showing the product list', error);
-        }
+    // ----- 0 -----
+    // Página de bienvenida.
+    async home (req, res) {
+        res.sendFile(path.join(__dirname, "../public/views/home.html"));
     },
 
 
+    // ----- 1 -----
+    // showProducts: Devuelve la vista con todos los productos.
+    async showProducts (req, res) {
+        try {
+            // // const products = await productModel.find();
+            // // res.status(200).json({ products });
+            res.sendFile(path.join(__dirname, "../public/views/getProductCards.html"));
+        } catch (error) {
+            console.error('❌ There was a problem showing the product list', error);
+            res.status(500).send('❌ There was a problem showing the product list');
+        }
+    },
+ 
+   
     // ----- 2 -----
     // showProductById: Devuelve la vista con el detalle de un producto.
-    async getProductById (req, res) {
+    async showProductById (req, res) {
         try {
             const productId = await productModel.findById(req.params._id)
             res.status(200).json({ mensaje: '✅ Product found', productId })
         } catch (error) {
             console.error('❌ There was a problem showing the product', error);
+            res.status(500).send('❌ There was a problem showing the product');
         }
     },
 
 
     // ----- 3 -----
     // showNewProduct: Devuelve la vista con el formulario para subir un artículo nuevo.
-
+    async showNewProduct(req, res) {
+        try {
+            res.sendFile(path.join(__dirname, "../public/views/newProduct.html"));
+        } catch (error) {
+            console.error('❌ There was a problem loading the new product', error);
+            res.status(500).send('❌ There was a problem showing the product');
+        }
+    },
 
     // ----- 4 -----
     // showEditProduct: Devuelve la vista con el formulario para editar un producto.
-
+    async showEditProduct(req, res) {
+        try {
+            res.sendFile(path.join(__dirname, "../public/views/editProduct.html"));
+        } catch (error) {
+            console.error('❌ There was a problem loading the edit product form', error);
+            res.status(500).send('❌ There was a problem loading the edit product form');
+        }
+    },
 
 
     // ----- 5 -----
@@ -46,6 +70,7 @@ const productController = {
             res.status(201).json({ mensaje: ' ✅ New product created: ', product })
         } catch (error) {
             console.error('❌ There was a problem creating the product', error);
+            res.status(500).send('❌ There was a problem creating the product');
         }
     },
 
@@ -73,19 +98,20 @@ const productController = {
             res.status(200).json({ mensaje: '✅ Updated product data', productUpdated })
         } catch (error) {
             console.error('❌ There was a problem updating the product', error);
+            res.status(500).send('❌ There was a problem updating the product');
         }
     },
 
 
     // ----- 7 -----
     //deleteProduct: Elimina un producto.
-
     async deleteProduct (req, res) {
         try {
             const productId = await productModel.findByIdAndDelete(req.params._id)
             res.status(200).json({ mensaje: '✅ The product has been removed', productId })
         } catch (error) {
             console.error('❌ There was a problem deleting the product', error);
+            res.status(500).send('❌ There was a problem deleting the product');
         }
     }
 };

@@ -2,9 +2,6 @@
 // ------------- Definición del esquema del usuario -------------
 // --------------------------------------------------------------
 
-//! Usuario admin¿?¿?¿?¿?
-//! ¿Es con Firebase?
-
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
