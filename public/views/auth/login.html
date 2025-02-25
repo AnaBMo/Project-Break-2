@@ -1,79 +1,81 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
-  <div class="formContainer">
-    <form>
-      <h1>Login</h1>
-      <input  class="input" type="email" id="email" placeholder="Email" required />
-      <input  class="input" type="password" id="password" placeholder="Password" required />
-      <button class="btn" type="button" id="loginButton">Login</button>
-      <div id="mensaje"></div>
-    </form>
-  </div>
-  <!-- revisar -->
-  <script type="module" src="./utils/configLogin.js"></script>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
 
+  <body>
+    <div class="formContainer">
+      <form id="loginForm">
+        <h1>Login</h1>
+        <input class="input" type="email" id="email" name="email" placeholder="Email" required />
+        <input class="input" type="password" id="password" name="password" placeholder="Password" required />
+        <button class="btn" type="submit" id="loginButton">Login</button>
+        <div id="mensaje"></div>
+      </form>
+    </div>
 
-  <!-- Incluye los scripts de Firebase JS SDK -->
-  <!-- <script type="module">
-    // Importa las funciones necesarias desde Firebase SDK
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js';
-    import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js';
+    <!-- Incluye los scripts de Firebase JS SDK -->
+    <script type="module">
+        // Importa las funciones necesarias desde Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js";
 
-    // Configuración de Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyCwv15q532hRVur2MqHOFUoByzBOez_0kQ",
-      authDomain: "login-firebase-e39bb.firebaseapp.com",
-      projectId: "login-firebase-e39bb",
-      storageBucket: "login-firebase-e39bb.appspot.com",
-      messagingSenderId: "74831738471",
-      appId: "1:74831738471:web:97995849620f53a742c6c2"
-    };
+        // Configuración de Firebase
+        const firebaseConfig = {
+          apiKey: "AIzaSyAfO9VADMDHZ6iWl1xYwhTfA4_5Ui0njCc",
+          authDomain: "fir-auth-dc25a.firebaseapp.com",
+          projectId: "fir-auth-dc25a",
+          storageBucket: "fir-auth-dc25a.firebasestorage.app",
+          messagingSenderId: "566227986207",
+          appId: "1:566227986207:web:009f12a365a9ecc7a2722a"
+        };
 
-    // Inicializa Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+        // Inicializa Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-    // Define la función login
-    window.login = function() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+        // Define la función login
+        async function login(event) {
+        event.preventDefault(); // Prevenir el envío tradicional del formulario
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          return userCredential.user.getIdToken(); // Obtén el ID token
-        })
-        .then((idToken) => {
-          // Envía el ID token al servidor
-          fetch('/login', {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+          // Realiza la autenticación en Firebase
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          const idToken = await userCredential.user.getIdToken();
+          console.log("Token obtenido:", idToken);
+
+          // Envía el idToken al servidor en formato JSON
+          const response = await fetch('/login', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+              'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ idToken }),
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.success) {
-              window.location.href = '/dashboard'; // Redirige a dashboard
-            } else {
-              console.error('Login failed:', data.error);
-            }
-          })
-          .catch(error => {
-            console.error('Error:', error);
+            body: JSON.stringify({ idToken })
           });
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
-    };
-  </script> -->
-</body>
+
+          const data = await response.json();
+          if (data.success) {
+            window.location.href = '/dashboard';
+          } else {
+            document.getElementById('mensaje').innerText = "Error en login: " + data.error;
+            console.error("Error en login:", data.error);
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          document.getElementById('mensaje').innerText = "Error: " + error.message;
+        }
+      }
+
+      // Programar el evento en el botón
+      document.getElementById('loginForm').addEventListener('submit', login);
+    </script>
+    
+  </body>
 </html>

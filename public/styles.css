@@ -9,10 +9,29 @@ Hoja de estilos de nuestra aplicación
 
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background: linear-gradient(to right, cadetblue, #a0bec0);
+}
+
+nav {
+    background: linear-gradient(45deg, rgb(36, 64, 65),  rgb(65, 127, 129));
+    padding: 15px 30px;
+    display: flex;
+    justify-content:space-around;
+    align-items:flex-start;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    width: 100vh;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+a{
+    text-decoration: none;
+    color:beige;
+    font-size: 18px;
 }
 
 .container, .formContainer {
@@ -27,6 +46,16 @@ h1 {
     margin-bottom: 20px;
     color: cadetblue;
 }
+
+h2 {
+    margin-bottom: 20px;
+    color: beige;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: center;
+    margin: 10px 5px;
+
+}
+
 
 .btn-container {
     display: flex;
@@ -57,7 +86,8 @@ h1 {
 
 p {
     font-size: 18px;
-    color:darkslategrey
+    color:darkslategrey;
+    text-align: center;
 }
 
 .product-list {
@@ -67,3 +97,89 @@ p {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+
+.product-card {
+    display: flex;
+    background: linear-gradient(45deg, rgb(36, 64, 65),  rgb(65, 127, 129));
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px;
+    width: 150px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    vertical-align: top;
+}
+
+.product-card img {
+    width: 150px;
+    height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.product-card p{
+    text-align: center;
+    color: beige;
+    margin: 10px 5px;
+}
+
+.product-card a {
+    display:flex;
+    justify-content: center;
+    margin-top: auto;      
+    margin-bottom: 20px;
+    padding: 8px 12px;
+    background-color: beige;
+    color: rgb(36, 64, 65);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+  
+.products {
+    display: flex;
+    flex-direction: row;
+    padding: 100px ;
+}
+
+.product-detail {
+    display: flex;
+    flex-direction: column;
+    padding: 100px ;
+}
+
+.product-detail img {
+    height: 400px;
+}
+
+.product-detail h1 {
+    color: rgb(36, 64, 65);
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.newProductForm {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline; 
+    justify-content: space-evenly; 
+    gap: 10px; 
+    padding: 30px;
+    height: 30vh;
+}
+
+label{
+    color: rgb(36, 64, 65);
+    padding: 0px 20px 0px 20px;
+}
+
+.newProductForm button{
+    margin-top: 30px;
+    margin-left: 75px;
+}
+

@@ -1,31 +1,27 @@
-// -----------------------------------------------------
-// ------------- Configuración de firebase -------------
-//!        Para el Firebase Web SDK (frontend)
-// -----------------------------------------------------
+// -------------------------------------------------------------------------
+// ----------------------  Iniciar admin de Firebase  ----------------------
+//! Inicializar el SDK de Firebase Admin en el backend (lado del servidor)
+// -------------------------------------------------------------------------
+const admin = require("firebase-admin");
+const dotenv = require('dotenv');
+dotenv.config();
 
-// Importa las funciones necesarias desde Firebase SDK
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js';
-import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js';
-
-// Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAfO9VADMDHZ6iWl1xYwhTfA4_5Ui0njCc",
-  authDomain: "fir-auth-dc25a.firebaseapp.com",
-  projectId: "fir-auth-dc25a",
-  storageBucket: "fir-auth-dc25a.firebasestorage.app",
-  messagingSenderId: "566227986207",
-  appId: "1:566227986207:web:009f12a365a9ecc7a2722a"
+const serviceAccount = {
+    "type" : process.env.FIREBASE_TYPE,
+    "project_id" :  process.env.FIREBASE_PROJECT_ID,
+    "private_key_id":  process.env.FIREBASE_PRIVATE_KEY_ID,
+    "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    "client_email":  process.env.FIREBASE_CLIENT_EMAIL,
+    "client_id" :  process.env.FIREBASE_CLIENT_ID,
+    "auth_uri" :  process.env.FIREBASE_AUTH_URI,
+    "token_uri" :  process.env.FIREBASE_TOKEN_URI,
+    "auth_provider_x509_cert_url" :  process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+    "client_x509_cert_url" :  process.env.FIREBASE_CLIENT_X509_CERT_URL,
+    "googleapis.com" : process.env.FIREBASE_UNIVERSE_DOMAIN
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
 
-export { auth };
-
-console.log("✅ Firebase inicializado correctamente");
+module.exports = admin;

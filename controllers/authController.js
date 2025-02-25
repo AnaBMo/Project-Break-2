@@ -38,6 +38,7 @@ const showLoginForm = (req, res) => {
 // 2.1. ----> lógica para el login  
 // Se espera recibir el token de Firebase (idToken) en el body
 const login = async (req, res) => {
+    console.log("Body recibido en login:", req.body);
     const { idToken } = req.body;
     if (!idToken) {
         console.error('🔴 No token provided');
@@ -58,8 +59,6 @@ const login = async (req, res) => {
         console.error(`🔴 Login error: ${error.message}`);
         res.status(401).json({ success: false, error: 'Token verification failed' });
     }
-
-  
 };
 
 // 3. ----> lógica para mostrar dashboard al confirmarse el login con Firebase
@@ -77,6 +76,7 @@ const showDashboard = (req, res) => {
 
 // 4. ----> lógica para el logout
 const logout = (req, res) => {
+    res.clearCookie('token'); // borrado de cookie
     res.redirect('/login');
 }; //faltaría borrar la cookie
 
