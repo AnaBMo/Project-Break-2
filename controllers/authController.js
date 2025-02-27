@@ -38,7 +38,7 @@ const showLoginForm = (req, res) => {
 // 2.1. ----> lógica para el login  
 // Se espera recibir el token de Firebase (idToken) en el body
 const login = async (req, res) => {
-    console.log("Body recibido en login:", req.body);
+    console.log("TOken", req.body);
     const { idToken } = req.body;
     if (!idToken) {
         console.error('🔴 No token provided');
