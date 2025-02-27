@@ -26,3 +26,4 @@ app.use('/', authRouter);
 dbConnection();
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+module.exports = app;

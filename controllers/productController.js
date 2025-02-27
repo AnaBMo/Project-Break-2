@@ -26,12 +26,12 @@ function getNavBar(isAdmin = false) {
       <a href="/products/category/caja">Cajas</a>
       <a href="/products/category/cono">Conos</a>
       <a href="/products/category/corazón">Corazones</a>
-      ${isAdmin 
-        ? `<a class="btn" href="/dashboard/new">New Product</a>
+      ${isAdmin
+      ? `<a class="btn" href="/dashboard/new">New Product</a>
            <form action="/logout" method="post">
              <button type="submit" class="btn">Logout</button>
            </form>`
-        : `<a class="btn" href="/login">Login</a>
+      : `<a class="btn" href="/login">Login</a>
            <a class="btn" href="/register">Register</a>`}
     </nav>
   `;
@@ -60,6 +60,8 @@ function getProductCards(products) {
 
 const productController = {
 
+  //!---------------------------PARA TEST-------------------------------
+  /*
   // ----- 1 -----
   // showProducts: Devuelve la vista con todos los productos.
   // Incluye diferencias en la vista si el usuario está autenticado o no lo está.
@@ -67,8 +69,36 @@ const productController = {
     try {
       const products = await productModel.find();
 
+      //respuesta JSON para comprobaciones en test
+      if (process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'test') {
+        return res.status(200).json(products);
+      };
+      
       // Se verifica autenticación
       const isAdmin = req.cookies.token ? true : false; 
+
+      const html = baseHtml() + getNavBar(isAdmin) + getProductCards(products) + '</body></html>';
+
+      res.send(html);
+    } catch (error) {
+      console.error('❌ There was a problem showing the product list', error);
+      res.status(500).send('❌ There was a problem showing the product list');
+    }
+  },
+  */
+  //!-------------------------------------------------------------------
+
+
+  // ----- 1 -----
+  // showProducts: Devuelve la vista con todos los productos.
+  // Incluye diferencias en la vista si el usuario está autenticado o no lo está.
+  async showProducts(req, res) {
+    try {
+      const products = await productModel.find();
+      console.log("Productos encontrados:", products);
+
+      // Se verifica autenticación
+      const isAdmin = req.cookies.token ? true : false;
 
       const html = baseHtml() + getNavBar(isAdmin) + getProductCards(products) + '</body></html>';
 
@@ -84,12 +114,12 @@ const productController = {
   // Incluye diferencias en la vista si el usuario está autenticado o no lo está.
   async showProductById(req, res) {
     try {
-      const product = await productModel.findById(req.params.productId); 
+      const product = await productModel.findById(req.params.productId);
       if (!product) return res.status(404).send('❌ Product not found');
-  
+
       // Si el ususario es administrador, mostrará botones Edit y Delete
-      const isAdmin = req.cookies.token ? true : false; 
-  
+      const isAdmin = req.cookies.token ? true : false;
+
       let adminButtons = "";
       if (isAdmin) {
         adminButtons = `
@@ -101,7 +131,7 @@ const productController = {
           </div>
         `;
       };
-  
+
       // Vista del detalle del producto
       const productDetail = `
         <div class="product-detail">
@@ -116,14 +146,14 @@ const productController = {
           </div>
         </div>
       `;
-  
+
       const html = baseHtml() + getNavBar(isAdmin) + productDetail + '</body></html>';
       res.send(html);
     } catch (error) {
       console.error('❌ There was a problem showing the product', error);
       res.status(500).send('❌ There was a problem showing the product');
     }
-  },  
+  },
 
   // ----- 3 -----
   // showNewProduct: Devuelve la vista con el formulario para subir un artículo nuevo.
@@ -147,6 +177,32 @@ const productController = {
     }
   },
 
+  //!---------------------------PARA TEST------------------------------- 
+  /*
+  // ----- 5 ----- 
+  // createProduct: Crea un nuevo producto. 
+  async createProduct(req, res) {
+    try {
+        const { name, description, img, category, size, price } = req.body;
+
+        if (!name || !description || !img || !category || !size || !price) {
+            return res.status(400).json({ error: 'All fields are required' });
+        }
+
+        const product = await productModel.create(req.body);
+        
+        if (process.env.NODE_ENV === 'test') {
+            return res.status(201).json(product);
+        };
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error('❌ There was a problem creating the product', error);
+        res.status(500).json({ error: '❌ There was a problem creating the product' });
+    }
+  },
+  */
+  //!-------------------------------------------------------------------
+
   // ----- 5 -----
   // createProduct: Crea un nuevo producto. 
   async createProduct(req, res) {
@@ -164,7 +220,7 @@ const productController = {
   // updateProduct: Actualiza un producto. 
   async updateProduct(req, res) {
     try {
-      const productId = req.params.productId; 
+      const productId = req.params.productId;
       const { name, description, img, category, size, price } = req.body;
 
       const productUpdated = await productModel.findByIdAndUpdate(
@@ -191,14 +247,14 @@ const productController = {
   //deleteProduct: Elimina un producto.
   async deleteProduct(req, res) {
     try {
-      const productId = req.params.productId; 
+      const productId = req.params.productId;
       const deletedProduct = await productModel.findByIdAndDelete(productId);
-  
+
       if (!deletedProduct) {
         console.error(`❌ Product with ID ${productId} not found.`);
         return res.status(404).send('❌ Product not found.');
       }
-  
+
       console.log(`✅ Product with ID ${productId} deleted successfully.`);
       res.redirect('/products');
     } catch (error) {
@@ -216,8 +272,8 @@ const productController = {
       const html = baseHtml() + getNavBar() + getProductCards(products) + '</body></html>';
       res.send(html);
     } catch (error) {
-      console.error('❌ Error al filtrar los productos por categoría', error);
-      res.status(500).send('❌ Error al filtrar los productos');
+      console.error('❌ There was a problem filtering the product by category.', error);
+      res.status(500).send('❌ There was a problem filtering the product by category.');
     }
   }
 };

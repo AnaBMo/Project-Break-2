@@ -23,4 +23,13 @@ router.post('/dashboard/:productId', authMiddleware, productController.updatePro
 router.delete('/dashboard/:productId/delete', authMiddleware, productController.deleteProduct);
 
 
+/*
+// Modificaciones para ejecutar los test
+if (process.env.NODE_ENV !== 'test') {
+    router.post('/dashboard', authMiddleware, productController.createProduct);
+} else {
+    router.post('/dashboard', productController.createProduct); 
+};
+*/
+
 module.exports = router;

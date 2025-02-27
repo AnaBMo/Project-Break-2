@@ -78,7 +78,7 @@ const showDashboard = (req, res) => {
 const logout = (req, res) => {
     res.clearCookie('token'); // borrado de cookie
     res.redirect('/');
-}; //faltaría borrar la cookie
+}; 
 
 module.exports = {
     register,
