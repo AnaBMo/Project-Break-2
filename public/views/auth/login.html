@@ -62,7 +62,7 @@
 
           const data = await response.json();
           if (data.success) {
-            window.location.href = '/dashboard';
+            window.location.href = '/products';
           } else {
             document.getElementById('mensaje').innerText = "Error en login: " + data.error;
             console.error("Error en login:", data.error);

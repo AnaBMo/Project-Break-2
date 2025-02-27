@@ -17,14 +17,22 @@ function baseHtml() {
     `;
 };
 
-function getNavBar() {
+// Barra de navegación distinta para usuario regular y usuario administrador
+function getNavBar(isAdmin = false) {
   return `
     <nav>
-      <a href="/products">Inicio</a>
+      <a href="/products">Products</a>
       <a href="/products/category/cesta">Cestas</a>
       <a href="/products/category/caja">Cajas</a>
       <a href="/products/category/cono">Conos</a>
       <a href="/products/category/corazón">Corazones</a>
+      ${isAdmin 
+        ? `<a class="btn" href="/dashboard/new">New Product</a>
+           <form action="/logout" method="post">
+             <button type="submit" class="btn">Logout</button>
+           </form>`
+        : `<a class="btn" href="/login">Login</a>
+           <a class="btn" href="/register">Register</a>`}
     </nav>
   `;
 };
@@ -51,18 +59,18 @@ function getProductCards(products) {
 // ---------------------------------------------------------------------------
 
 const productController = {
-  // ----- 0 -----
-  // Página de bienvenida.
-  async index(req, res) {
-    res.sendFile(path.join(__dirname, "../public/views/index.html"));
-  },
 
   // ----- 1 -----
   // showProducts: Devuelve la vista con todos los productos.
+  // Incluye diferencias en la vista si el usuario está autenticado o no lo está.
   async showProducts(req, res) {
     try {
       const products = await productModel.find();
-      const html = baseHtml() + getNavBar() + getProductCards(products) + '</body></html>';
+
+      // Se verifica autenticación
+      const isAdmin = req.cookies.token ? true : false; 
+
+      const html = baseHtml() + getNavBar(isAdmin) + getProductCards(products) + '</body></html>';
 
       res.send(html);
     } catch (error) {
@@ -73,33 +81,55 @@ const productController = {
 
   // ----- 2 -----
   // showProductById: Devuelve la vista con el detalle de un producto.
+  // Incluye diferencias en la vista si el usuario está autenticado o no lo está.
   async showProductById(req, res) {
     try {
-      const product = await productModel.findById(req.params._id);
+      const product = await productModel.findById(req.params.productId); 
       if (!product) return res.status(404).send('❌ Product not found');
-
-      // Vista dinámica para el detalle del producto
+  
+      // Si el ususario es administrador, mostrará botones Edit y Delete
+      const isAdmin = req.cookies.token ? true : false; 
+  
+      let adminButtons = "";
+      if (isAdmin) {
+        adminButtons = `
+          <div class="admin-buttons">
+            <a href="/dashboard/${product._id}/edit" class="btn">Edit</a>
+            <form action="/dashboard/${product._id}/delete" method="POST" onsubmit="return confirm('The product will be permanently removed.');">
+              <button type="submit" class="btn">Delete</button>
+            </form>
+          </div>
+        `;
+      };
+  
+      // Vista del detalle del producto
       const productDetail = `
-            <div class="product-detail">
-              <img src="${product.img}" alt="${product.name}">
-              <h1>${product.name}</h1>
-              <p>${product.description}</p>
-              <p>Precio: ${product.price}€</p>
+        <div class="product-detail">
+          <img src="${product.img}" alt="${product.name}">
+          <div class="product-detail-text">
+            <h1>${product.name}</h1>
+            <p>${product.description}</p>
+            <p>Precio: ${product.price}€</p>
+            <div class="admin-buttons">
+              ${adminButtons} 
             </div>
-          `;
-      const html = baseHtml() + getNavBar() + productDetail + '</body></html>';
+          </div>
+        </div>
+      `;
+  
+      const html = baseHtml() + getNavBar(isAdmin) + productDetail + '</body></html>';
       res.send(html);
     } catch (error) {
       console.error('❌ There was a problem showing the product', error);
       res.status(500).send('❌ There was a problem showing the product');
     }
-  },
+  },  
 
   // ----- 3 -----
   // showNewProduct: Devuelve la vista con el formulario para subir un artículo nuevo.
   async showNewProduct(req, res) {
     try {
-      res.sendFile(path.join(__dirname, "../public/views/dashboard/newProduct.html"));
+      res.sendFile(path.join(__dirname, "../public/views/admin/newProduct.html"));
     } catch (error) {
       console.error('❌ There was a problem loading the new product', error);
       res.status(500).send('❌ There was a problem showing the product');
@@ -110,7 +140,7 @@ const productController = {
   // showEditProduct: Devuelve la vista con el formulario para editar un producto.
   async showEditProduct(req, res) {
     try {
-      res.sendFile(path.join(__dirname, "../public/views/dashboard/editProduct.html"));
+      res.sendFile(path.join(__dirname, "../public/views/admin/editProduct.html"));
     } catch (error) {
       console.error('❌ There was a problem loading the edit product form', error);
       res.status(500).send('❌ There was a problem loading the edit product form');
@@ -134,8 +164,8 @@ const productController = {
   // updateProduct: Actualiza un producto. 
   async updateProduct(req, res) {
     try {
-      const productId = req.params._id
-      const { name, description, img, category, size, price } = req.body
+      const productId = req.params.productId; 
+      const { name, description, img, category, size, price } = req.body;
 
       const productUpdated = await productModel.findByIdAndUpdate(
         productId,
@@ -146,11 +176,11 @@ const productController = {
           category: category,
           size: size,
           price: price,
-          new: true
-        }
+        },
+        { new: true }
       );
       // // res.status(200).json({ mensaje: '✅ Updated product data', productUpdated });
-      res.redirect('/dashboard');
+      res.redirect('/products');
     } catch (error) {
       console.error('❌ There was a problem updating the product', error);
       res.status(500).send('❌ There was a problem updating the product');
@@ -161,12 +191,19 @@ const productController = {
   //deleteProduct: Elimina un producto.
   async deleteProduct(req, res) {
     try {
-      const productId = await productModel.findByIdAndDelete(req.params._id)
-      // // res.status(200).json({ mensaje: '✅ The product has been removed', productId })
-      res.redirect('/dashboard');
+      const productId = req.params.productId; 
+      const deletedProduct = await productModel.findByIdAndDelete(productId);
+  
+      if (!deletedProduct) {
+        console.error(`❌ Product with ID ${productId} not found.`);
+        return res.status(404).send('❌ Product not found.');
+      }
+  
+      console.log(`✅ Product with ID ${productId} deleted successfully.`);
+      res.redirect('/products');
     } catch (error) {
-      console.error('❌ There was a problem deleting the product', error);
-      res.status(500).send('❌ There was a problem deleting the product');
+      console.error('❌ There was a problem deleting the product:', error);
+      res.status(500).send('❌ There was a problem deleting the product.');
     }
   },
 

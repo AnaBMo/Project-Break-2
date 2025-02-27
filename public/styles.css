@@ -12,7 +12,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(to right, cadetblue, #a0bec0);
 }
 
@@ -21,20 +21,36 @@ nav {
     padding: 15px 30px;
     display: flex;
     justify-content:space-around;
-    align-items:flex-start;
+    align-items:center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     width: 100vh;
+    height: 20px;
     border-radius: 5px;
     padding: 20px;
+    margin-top: 50px;
+    margin-bottom: 20px;
 }
 
 a{
     text-decoration: none;
     color:beige;
     font-size: 18px;
+    padding: 5px 30px;
 }
 
-.container, .formContainer {
+a:hover{
+    color:white;
+    transform: scale(1.1);
+}
+
+
+.container {
+    width: 90%;
+    max-width: 1200px; 
+    margin: 0 auto;
+}
+
+.formContainer {
     text-align: center;
     background: white;
     padding: 40px;
@@ -56,7 +72,6 @@ h2 {
 
 }
 
-
 .btn-container {
     display: flex;
     gap: 20px;
@@ -65,18 +80,19 @@ h2 {
 }
 
 .btn {
-    padding: 10px 20px;
+    padding: 10px 15px;
     background: rgb(46, 135, 138);
-    font-size: 16px;
-    color: white;
+    font-size: 18px;
+    color: beige;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     transition: 0.3s;
 }
 
 .btn:hover {
-    opacity: 0.8;
+    color:white;
+    transform: scale(1.1);
 }
 
 .input {
@@ -140,12 +156,18 @@ p {
     border-radius: 4px;
     transition: background-color 0.3s ease;
 }
-  
+
 .products {
     display: flex;
-    flex-direction: row;
-    padding: 100px ;
+    flex-wrap: wrap; 
+    justify-content: center;
+    gap: 20px; 
+    max-width: 1200px;
+    width: 100%; 
+    margin: 0 auto; 
+    padding: 20px;
 }
+
 
 .product-detail {
     display: flex;
@@ -163,7 +185,7 @@ p {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.newProductForm {
+.newProductForm, .editProductForm {
     display: flex;
     flex-direction: column;
     align-items: baseline; 
@@ -173,13 +195,45 @@ p {
     height: 30vh;
 }
 
+.newProductForm button, .editProductForm button{
+    margin-top: 30px;
+    margin-left: 75px;
+}
+
 label{
     color: rgb(36, 64, 65);
     padding: 0px 20px 0px 20px;
 }
 
-.newProductForm button{
-    margin-top: 30px;
-    margin-left: 75px;
+
+.admin-nav {
+    background-color: rgba(255, 228, 196, 0.2);
+    color: beige;
+    border-radius: 10px;
+    padding: 5px 30px;
 }
 
+.admin-nav:hover {
+    background-color: rgb(36, 64, 65);
+    border-radius: 10px;
+    padding: 5px 30px;
+    backdrop-filter: blur(10px); 
+}
+
+
+.product-detail {
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    justify-content: center; 
+    gap: 50px; 
+    padding: 30px;
+}
+
+.admin-buttons {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
