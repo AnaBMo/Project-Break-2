@@ -18,13 +18,3 @@ router.post('/login', authController.login);
 router.post('/logout', authController.logout); 
 
 module.exports = router;
-
-/*
----------------------------Capturar el Token en el Backend---------------------------
-En la ruta POST /login, se recibe el token enviado en el body de la solicitud.
-Luego, se usa Firebase Admin para verificar ese token.
-Si la verificación es exitosa, se puede guardar el token en una cookie para que en 
-futuras solicitudes (como a /dashboard) el middleware de autenticación lo lea desde 
-req.cookies.token.
---------------------------------------------------------------------------------------
-*/

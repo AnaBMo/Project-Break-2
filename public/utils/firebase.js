@@ -21,9 +21,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-
-console.log("✅ Firebase inicializado correctamente", app);
-
 // Define la función login como una arrow function
 const login = async () => {
   const mensajeDiv = document.getElementById('mensaje'); // Obtén el div para mostrar errores

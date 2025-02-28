@@ -11,7 +11,7 @@ const authMiddleware = async (req, res, next) => {
     console.log(req.cookies.token);
   
     if (!idToken) {
-        console.error('🔴 No se encontró token en la cookie');
+        console.error('🔴 No token found in cookie');
         return res.redirect('/login');
     }
   

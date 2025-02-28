@@ -11,7 +11,7 @@
 <body>
     <div class="formContainer">
         <h1>Edit Product</h1>
-        <form class="editProductForm" id="editProductForm" action="/dashboard" method="POST">
+        <form class="editProductForm" id="editProductForm" method="POST">
             <div>
                 <label for="name">Nombre:</label>
                 <input type="text" id="name" name="name" required>
@@ -52,6 +52,10 @@
             </div>
         </form>
     </div>
+    <script>
+        const productId = window.location.pathname.split("/")[2]; // coge el id de la propia url
+        document.querySelector("#editProductForm").action = `/dashboard/${productId}`;
+    </script>
 </body>
 
 </html>

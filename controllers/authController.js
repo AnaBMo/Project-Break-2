@@ -22,7 +22,7 @@ const register = async (req, res) => {
             email, 
             password 
         });
-        console.log(" 🟢 User created successfully. Redirecting to /login...");
+        console.log("🟢 User created successfully. Redirecting to /login...");
         res.redirect('/login');
     } catch (error) {
         console.error(`🔴 There was an internal error: ${error.message}`);
@@ -38,7 +38,6 @@ const showLoginForm = (req, res) => {
 // 2.1. ----> lógica para el login  
 // Se espera recibir el token de Firebase (idToken) en el body
 const login = async (req, res) => {
-    console.log("TOken", req.body);
     const { idToken } = req.body;
     if (!idToken) {
         console.error('🔴 No token provided');

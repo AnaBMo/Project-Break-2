@@ -14,14 +14,13 @@ router.get('/products/:productId', productController.showProductById);
 router.get('/products/category/:category', productController.filterProductsByCategory);
 
 // Rutas protegidas para el dashboard 
-//! router.get('/dashboard', authMiddleware, productController.showProducts);
+router.get('/dashboard', authMiddleware, productController.showProducts);
 router.get('/dashboard/new', authMiddleware, productController.showNewProduct); 
 router.post('/dashboard', authMiddleware, productController.createProduct);           
-//! router.get('/dashboard/:productId', authMiddleware, productController.showProductById); 
+router.get('/dashboard/:productId', authMiddleware, productController.showProductById); 
 router.get('/dashboard/:productId/edit', authMiddleware, productController.showEditProduct);  
-router.post('/dashboard/:productId', authMiddleware, productController.updateProduct); //! post o put?      
-router.delete('/dashboard/:productId/delete', authMiddleware, productController.deleteProduct);
-
+router.post('/dashboard/:productId', authMiddleware, productController.updateProduct);      
+router.post('/dashboard/:productId/delete', authMiddleware, productController.deleteProduct);
 
 /*
 // Modificaciones para ejecutar los test

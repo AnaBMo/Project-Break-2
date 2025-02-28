@@ -12,7 +12,7 @@ const authRouter = require("./routes/authRoutes");
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 
-app.use(cookieParser()); // Para leer cookies correctamente
+app.use(cookieParser()); 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 

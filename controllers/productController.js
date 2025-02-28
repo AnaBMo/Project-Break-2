@@ -60,42 +60,12 @@ function getProductCards(products) {
 
 const productController = {
 
-  //!---------------------------PARA TEST-------------------------------
-  /*
   // ----- 1 -----
   // showProducts: Devuelve la vista con todos los productos.
   // Incluye diferencias en la vista si el usuario está autenticado o no lo está.
   async showProducts(req, res) {
     try {
       const products = await productModel.find();
-
-      //respuesta JSON para comprobaciones en test
-      if (process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'test') {
-        return res.status(200).json(products);
-      };
-      
-      // Se verifica autenticación
-      const isAdmin = req.cookies.token ? true : false; 
-
-      const html = baseHtml() + getNavBar(isAdmin) + getProductCards(products) + '</body></html>';
-
-      res.send(html);
-    } catch (error) {
-      console.error('❌ There was a problem showing the product list', error);
-      res.status(500).send('❌ There was a problem showing the product list');
-    }
-  },
-  */
-  //!-------------------------------------------------------------------
-
-
-  // ----- 1 -----
-  // showProducts: Devuelve la vista con todos los productos.
-  // Incluye diferencias en la vista si el usuario está autenticado o no lo está.
-  async showProducts(req, res) {
-    try {
-      const products = await productModel.find();
-      console.log("Productos encontrados:", products);
 
       // Se verifica autenticación
       const isAdmin = req.cookies.token ? true : false;
@@ -177,32 +147,6 @@ const productController = {
     }
   },
 
-  //!---------------------------PARA TEST------------------------------- 
-  /*
-  // ----- 5 ----- 
-  // createProduct: Crea un nuevo producto. 
-  async createProduct(req, res) {
-    try {
-        const { name, description, img, category, size, price } = req.body;
-
-        if (!name || !description || !img || !category || !size || !price) {
-            return res.status(400).json({ error: 'All fields are required' });
-        }
-
-        const product = await productModel.create(req.body);
-        
-        if (process.env.NODE_ENV === 'test') {
-            return res.status(201).json(product);
-        };
-        res.redirect('/dashboard');
-    } catch (error) {
-        console.error('❌ There was a problem creating the product', error);
-        res.status(500).json({ error: '❌ There was a problem creating the product' });
-    }
-  },
-  */
-  //!-------------------------------------------------------------------
-
   // ----- 5 -----
   // createProduct: Crea un nuevo producto. 
   async createProduct(req, res) {
@@ -279,3 +223,57 @@ const productController = {
 };
 
 module.exports = productController;
+
+//!---------------------------PARA TEST-------------------------------
+  /*
+  // ----- 1 -----
+  // showProducts: Devuelve la vista con todos los productos.
+  // Incluye diferencias en la vista si el usuario está autenticado o no lo está.
+  async showProducts(req, res) {
+    try {
+      const products = await productModel.find();
+
+      //respuesta JSON para comprobaciones en test
+      if (process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'test') {
+        return res.status(200).json(products);
+      };
+      
+      // Se verifica autenticación
+      const isAdmin = req.cookies.token ? true : false; 
+
+      const html = baseHtml() + getNavBar(isAdmin) + getProductCards(products) + '</body></html>';
+
+      res.send(html);
+    } catch (error) {
+      console.error('❌ There was a problem showing the product list', error);
+      res.status(500).send('❌ There was a problem showing the product list');
+    }
+  },
+  */
+  //!-------------------------------------------------------------------
+
+  //!---------------------------PARA TEST------------------------------- 
+  /*
+  // ----- 5 ----- 
+  // createProduct: Crea un nuevo producto. 
+  async createProduct(req, res) {
+    try {
+        const { name, description, img, category, size, price } = req.body;
+
+        if (!name || !description || !img || !category || !size || !price) {
+            return res.status(400).json({ error: 'All fields are required' });
+        }
+
+        const product = await productModel.create(req.body);
+        
+        if (process.env.NODE_ENV === 'test') {
+            return res.status(201).json(product);
+        };
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error('❌ There was a problem creating the product', error);
+        res.status(500).json({ error: '❌ There was a problem creating the product' });
+    }
+  },
+  */
+  //!-------------------------------------------------------------------
