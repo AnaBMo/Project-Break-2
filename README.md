@@ -118,6 +118,8 @@ Este proyecto está listo para ser desplegado en **Render**:
 3. Configurar las variables de entorno en Render.
 4. Deploy automático con cada push a `main`.
 
+https://detalles-dulces.onrender.com/
+
 ## 📖 Recursos útiles
 - [Express](https://expressjs.com/)
 - [Mongoose](https://mongoosejs.com/)
